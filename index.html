@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="BootstrapCss/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="generate-pin half-width">
+                    <input id="generatePinShow" class="form-control" type="text">
+                    <button class="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input id="showClickedNumber" class="form-control" type="text">
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                              <div class="button">7</div>
+                              <div class="button">8</div>
+                              <div class="button">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button">4</div>
+                              <div class="button">5</div>
+                              <div class="button">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button">1</div>
+                              <div class="button">2</div>
+                              <div class="button">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div id="deleteSingleInput" ><</div>
+                                <div class="button">0</div>
+                                <div id="clearAllInputs">C</div>
+                            </div>
+                            <div>
+                                <button type="submit" class="submit-btn">Submit</button>
+                                <p class="action-left">3 try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notify-section">
+            <p id="error-notify" class="notify">❌ Pin Didn't Match, Please try again</p>
+            <p id="success-notify" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+    </div>
+
+
+
+    <script>
+        // Generate PIN
+        const generateBtn = document.querySelector('.generate-btn');
+        let generatePinShow = document.getElementById('generatePinShow');
+        generateBtn.addEventListener('click', ()=> {
+            const randNumber = Math.floor(Math.random() * 9999);
+            generatePinShow.value = randNumber;
+        });
+        
+        // Display Clicked Numbers
+        const buttons = document.querySelectorAll('.button')
+        const showClickedNumber= document.getElementById('showClickedNumber')
+        let numbersCollection = []
+        buttons.forEach(button => {
+            button.addEventListener('click', e => {
+                const getClickedNumber =  e.target.innerText
+                numbersCollection.push(getClickedNumber)                
+                showClickedNumber.value = numbersCollection.join('')
+            })
+        });
+
+
+        // Submit numbers to check equality
+        const submitBtn = document.querySelector('.submit-btn')
+        const successNotify = document.getElementById('success-notify');
+        const errorNotify = document.getElementById('error-notify');
+
+        submitBtn.addEventListener('click', ()=> {
+            if(generatePinShow.value === showClickedNumber.value){
+                console.log(true)
+                successNotify.style.display = 'block'
+            } else {
+                errorNotify.style.display = 'block'
+            }
+        });
+
+        // Delete last input number
+        const deleteSingleCharacter = document.getElementById('deleteSingleInput')
+        deleteSingleCharacter.addEventListener('click', () => {
+            numbersCollection.pop();
+            showClickedNumber.value = numbersCollection.join('')
+        });
+        
+        // Clear all input numbers
+        const clearAllInputs = document.getElementById('clearAllInputs');
+        clearAllInputs.addEventListener('click', () => {
+            numbersCollection = []
+            showClickedNumber.value = numbersCollection.join('')    
+        });
+
+    </script>
+</body>
+</html>
